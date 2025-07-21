@@ -20,8 +20,9 @@ export async function GET() {
         const db = getFirestore(app);
         const q = query(collection(db, "menu"));
         const querySnapshot = await getDocs(q);
+        const result = [];
         querySnapshot.forEach((doc) => {
-            result = doc.data()
+             result.push(doc.data())
             console.log(doc.id, " => ", doc.data());
         });
         
