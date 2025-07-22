@@ -1,5 +1,5 @@
 'use client';
-import { Switch } from "@/components/ui/switch"
+import { Switch } from "@/app/components/ui/switch"
 import { useEffect, useState } from "react";
 
 
@@ -18,17 +18,18 @@ export default function Home() {
       const interval = setInterval(()=>{
         fetchdata()
 
-      },100);
+      },2000);
+
       return ()=>clearInterval(interval);
     } catch (error) {
       alert(error)
     }
   },[])
   return (
-    <div className="max-h-full flex flex-col items-center ">
-      <div className=" grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10">
+    <div className="min-h-full flex flex-col items-center ">
+      <div className=" grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10 mt-20">
         {menuList.map((item,index)=>(
-
+          
           <div key={index} className="flex flex-col shadow-lg rounded-lg p-2">
           <div className="space-x-30  flex items-center justify-between m-2">
             <p className="text-2xl font-semibold">{item.name}</p>

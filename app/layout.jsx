@@ -1,15 +1,9 @@
 import {
   ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
 } from '@clerk/nextjs'
 import { Analytics } from "@vercel/analytics/next"
-import './globals.css'
-import Link from 'next/link'
-
+import './globals.css'  
+import Navbar from './components/Navbar/page'
 
 export const metadata = {
   title: 'Clerk Next.js Quickstart',
@@ -21,24 +15,7 @@ export default function RootLayout({children}){
     <ClerkProvider>
       <html lang="en">
         <body>
-          <header className="flex justify-between items-center p-4 gap-4 h-16">
-            
-            <div>
-              <Link href={" /alerts"}>View alerts </Link>
-              <Link href={"/staff"}>Staff Login</Link>
-            </div>
-            <SignedOut>
-              <SignInButton />
-              <SignUpButton>
-                <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
-                  Sign Up
-                </button>
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
+          <Navbar />
           <Analytics/>
           {children}
         </body>
