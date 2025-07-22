@@ -8,6 +8,7 @@ import {
 } from '@clerk/nextjs'
 import { Analytics } from "@vercel/analytics/next"
 import './globals.css'
+import Link from 'next/link'
 
 
 export const metadata = {
@@ -20,7 +21,12 @@ export default function RootLayout({children}){
     <ClerkProvider>
       <html lang="en">
         <body>
-          <header className="flex justify-end items-center p-4 gap-4 h-16">
+          <header className="flex justify-between items-center p-4 gap-4 h-16">
+            
+            <div>
+              <Link href={" /alerts"}>View alerts </Link>
+              <Link href={"/staff"}>Staff Login</Link>
+            </div>
             <SignedOut>
               <SignInButton />
               <SignUpButton>

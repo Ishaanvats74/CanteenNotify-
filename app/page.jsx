@@ -26,7 +26,7 @@ export default function Home() {
   },[])
   return (
     <div className="max-h-full flex flex-col items-center ">
-      <div className=" grid grid-cols-2 gap-10">
+      <div className=" grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10">
         {menuList.map((item,index)=>(
 
           <div key={index} className="flex flex-col shadow-lg rounded-lg p-2">
@@ -40,7 +40,6 @@ export default function Home() {
           </div>
         </div>
         ))}
-
       </div>
     </div>
   );
