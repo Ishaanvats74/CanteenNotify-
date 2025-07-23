@@ -3,6 +3,7 @@ import { getFirestore } from "firebase/firestore";
 import { doc, updateDoc } from "firebase/firestore";
 import { collection, query, where, getDocs } from "firebase/firestore"
 import { NextResponse } from "next/server";
+import {  addDoc } from "firebase/firestore"; 
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_FIREBASE_KEY,
@@ -55,3 +56,21 @@ export async function PATCH(req) {
         return NextResponse.json({error:error},{status:500})
     }
 }
+
+export async function ADD(){
+    try {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const body = await req.json()
+        const {itemName, itemAvailable} = body;
+        const result = await addDoc(collection(db, "cities"), {
+            name: itemName,
+            available: itemAvailable
+        });
+        return NextResponse.json({result:result},{status:200})
+    } catch (error) {
+        return NextResponse.json({error:error},{status:500})
+    }
+}
+
+export async function DELETE(){}

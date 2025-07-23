@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 const page = () => {
@@ -42,7 +43,7 @@ const page = () => {
     }
   };
 
-  const updateitem = ()=>{
+  const updateitem = (itemName,itemAvailable)=>{
     try {
         const fetchdata = async(itemName,itemAvailable)=>{
             const res = await fetch('/api/staff',{
@@ -61,13 +62,13 @@ const page = () => {
    <div className="mt-16">
   {loggedIN ? (
     <div className="p-6">
-      <button className="text-xl font-semibold mb-4 hover:cursor-pointer shadow p-2 rounded-md hover:scale-105 transition-all duration-200 ease-in-out hover:bg-gray-300">+ Add New Item</button>
+      <Link href={'/Additem'} className="text-xl font-semibold mb-4 hover:cursor-pointer shadow p-2 rounded-md hover:scale-105 transition-all duration-200 ease-in-out hover:bg-gray-300">+ Add New Item</Link>
         <div className=" grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10 mt-20">
         {menuList.map((item,index)=>(
         <div key={index} className="flex flex-col shadow-lg rounded-lg p-2">
             <div className="space-x-30  flex items-center justify-between m-2">
                 <p className="text-2xl font-semibold">{item.name}</p>
-                <button onClick={()=>updateitem(item.name,item.available)} className={` font-semibold text-white px-2 py-1 text-sm ${item.available?"bg-green-500":"bg-red-500"}`}>{item.available?"In stock":"Out of stock"}</button>
+                <button onClick={()=>updateitem(item.name,item.available)} className={`hover:scale-105 transition-all duration-200 ease-in-out  font-semibold text-white px-2 py-1 text-sm ${item.available?"bg-green-500":"bg-red-500"}`}>{item.available?"In stock":"Out of stock"}</button>
             </div>
         </div>
         ))}
