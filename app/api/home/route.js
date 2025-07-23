@@ -22,8 +22,8 @@ export async function GET() {
         const querySnapshot = await getDocs(q);
         const result = [];
         querySnapshot.forEach((doc) => {
-             result.push(doc.data())
-            console.log(doc.id, " => ", doc.data());
+            result.push(doc.data())
+            // console.log(doc.id, " => ", doc.data());
         });
         
         return NextResponse.json({result:result},{status:200})

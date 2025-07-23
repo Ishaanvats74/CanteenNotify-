@@ -1,19 +1,39 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
-import Icon from "react-icons-kit";
+import React, { useEffect, useState } from "react";
 
 const page = () => {
   const [loggedIN, setLoggedIN] = useState(false);
   const [type, setType] = useState("password");
   const [icon, setIcon] = useState("/images/eye.svg");
+  const [menuList,setMenuList] = useState([])
 
   const handleSubmit = async () => {
     setLoggedIN(true);
   };
+
+  useEffect(()=>{
+    try {
+        const fetchdata = async()=>{
+            const res = await fetch('/api/staff',{
+                method:"GET",
+            })
+            const data = await res.json()
+            // console.log(data)
+            setMenuList(data.result)
+        }
+        const interval = setInterval(() => {
+            fetchdata();
+            
+        }, 1000);
+        return ()=>clearInterval(interval)
+    } catch (error) {
+        alert(error)
+    }
+  },[])
   const passwordshow = async () => {
-    if (type == "password") {
+    if (type === "password") {
       setType("text");
       setIcon("/images/eye-off.svg");
     } else {
@@ -22,13 +42,36 @@ const page = () => {
     }
   };
 
+  const updateitem = ()=>{
+    try {
+        const fetchdata = async(itemName,itemAvailable)=>{
+            const res = await fetch('/api/staff',{
+                method:"PATCH",
+                body: JSON.stringify({itemName,itemAvailable})
+            })
+            const data = await res.json()
+            console.log(data)
+        }
+        fetchdata(itemName,itemAvailable);
+    } catch (error) {
+    }
+  }
+
   return (
    <div className="mt-16">
   {loggedIN ? (
     <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Add New Item</h1>
-      <p className="text-gray-600">Welcome! Start adding your items here.</p>
-
+      <button className="text-xl font-semibold mb-4 hover:cursor-pointer shadow p-2 rounded-md hover:scale-105 transition-all duration-200 ease-in-out hover:bg-gray-300">+ Add New Item</button>
+        <div className=" grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10 mt-20">
+        {menuList.map((item,index)=>(
+        <div key={index} className="flex flex-col shadow-lg rounded-lg p-2">
+            <div className="space-x-30  flex items-center justify-between m-2">
+                <p className="text-2xl font-semibold">{item.name}</p>
+                <button onClick={()=>updateitem(item.name,item.available)} className={` font-semibold text-white px-2 py-1 text-sm ${item.available?"bg-green-500":"bg-red-500"}`}>{item.available?"In stock":"Out of stock"}</button>
+            </div>
+        </div>
+        ))}
+      </div>
     </div>
   ) : (
     <div className="h-[calc(100vh-64px)] flex items-center justify-center bg-gray-50">
