@@ -62,7 +62,10 @@ const page = () => {
    <div className="mt-16">
   {loggedIN ? (
     <div className="p-6">
-      <Link href={'/Additem'} className="text-xl font-semibold mb-4 hover:cursor-pointer shadow p-2 rounded-md hover:scale-105 transition-all duration-200 ease-in-out hover:bg-gray-300">+ Add New Item</Link>
+        <div className="flex justify-between">
+            <Link href={'/Additem'} className="text-xl font-semibold mb-4 hover:cursor-pointer shadow p-2 rounded-md hover:scale-110 transition-all duration-200 ease-in-out hover:bg-gray-300">+ Add New Item</Link>
+            <Link href={'/deleteItem'} className="text-xl font-semibold mb-4 hover:cursor-pointer shadow p-2 rounded-md hover:scale-110 transition-all duration-200 ease-in-out hover:bg-gray-300">Delete Item</Link>
+        </div>
         <div className=" grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10 mt-20">
         {menuList.map((item,index)=>(
         <div key={index} className="flex flex-col shadow-lg rounded-lg p-2">
