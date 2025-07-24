@@ -9,9 +9,37 @@ const page = () => {
   const [icon, setIcon] = useState("/images/eye.svg");
   const [menuList, setMenuList] = useState([]);
   const [Remove, SetRemove] = useState(false);
+  const [Username,setUsername] = useState('');
+  const [Password,setPassword] = useState('');
 
+
+  const handleUsername = (event)=>{
+    setUsername(event.target.value)
+  }
+  const handlePassword = (event)=>{
+    setPassword(event.target.value)
+  }
+  
   const handleSubmit = async () => {
-    setLoggedIN(true);
+    try {
+      const fetchdata = async(Username,Password)=>{
+        const res = await fetch('/api/staffLogin',{
+          method: "POST",
+          body:JSON.stringify({Username,Password})
+        })
+        const data = await res.json();
+        if (data.result === "Success") {
+          setLoggedIN(true)
+        }else {
+          alert(data.result);
+        }
+      }
+
+      fetchdata(Username,Password);
+
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   useEffect(() => {
@@ -163,6 +191,7 @@ const handleDelete = async(itemName)=>{
                   Username
                 </label>
                 <input
+                  onChange={handleUsername}
                   type="text"
                   placeholder="Enter Your username"
                   className="px-3 border w-80 h-10 rounded-md shadow shadow-gray-200 focus:outline-none focus:border-2 focus:border-black"
@@ -175,6 +204,7 @@ const handleDelete = async(itemName)=>{
                 </label>
                 <div className="relative">
                   <input
+                    onChange={handlePassword}
                     type={type}
                     id="password"
                     placeholder="Enter your password"
