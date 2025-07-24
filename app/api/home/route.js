@@ -23,7 +23,6 @@ export async function GET() {
         const result = [];
         querySnapshot.forEach((doc) => {
             result.push(doc.data())
-            // console.log(doc.id, " => ", doc.data());
         });
         
         return NextResponse.json({result:result},{status:200})

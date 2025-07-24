@@ -18,7 +18,7 @@ export default function Home() {
       const interval = setInterval(()=>{
         fetchdata()
 
-      },7000);
+      },3000);
 
       return ()=>clearInterval(interval);
     } catch (error) {
@@ -27,7 +27,7 @@ export default function Home() {
   },[])
   return (
     <div className="min-h-full flex flex-col items-center ">
-      <div className=" grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10 mt-20">
+      <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10 mt-20">
         {menuList.map((item,index)=>(
           
           <div key={index} className="flex flex-col shadow-lg rounded-lg p-2">
