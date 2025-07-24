@@ -18,7 +18,7 @@ export default function Home() {
       const interval = setInterval(()=>{
         fetchdata()
 
-      },2000);
+      },7000);
 
       return ()=>clearInterval(interval);
     } catch (error) {

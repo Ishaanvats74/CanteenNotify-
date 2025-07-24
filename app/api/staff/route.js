@@ -1,9 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-import { doc, updateDoc } from "firebase/firestore";
-import { collection, query, where, getDocs } from "firebase/firestore"
+import {getFirestore, collection, query, where, getDocs,setDoc,deleteDoc,doc, updateDoc } from "firebase/firestore"
 import { NextResponse } from "next/server";
-import {  setDoc } from "firebase/firestore"; 
+
 
 const firebaseConfig = {
     apiKey: process.env.NEXT_FIREBASE_KEY,
@@ -73,6 +71,15 @@ export async function POST(req){
     }
 }
 
-export async function DELETE(){
-    
+export async function DELETE(req){
+    try {
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const body = await req.json()
+        const {itemName} = body;
+        await deleteDoc(doc(db, "menu", `${itemName}`));
+        return NextResponse.json({result:"deleted"},{status:200})
+    } catch (error) {
+        return NextResponse.json({error:error},{status:500})
+    }
 }
