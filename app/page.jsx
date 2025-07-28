@@ -30,21 +30,15 @@ export default function Home() {
     try {
       const perm = await Notification.requestPermission();
       if (perm === "granted") {
-        const notification = new Notification("Example notification", {
-          body: `You will be notified when ${item.name} is back in stock!`,
-          data: { hello: "world" },
+        const notification = new Notification("Notifications Enabled", {
+          body: `You'll get alerts when ${item.name} stock changes!`,
           icon: "/images/vecteezy_waiter-s-hand-illustration_.jpg",
         });
 
-        notification.addEventListener("click", () => {
-          window.open("http://localhost:3000/", "_blank");
-        });
         const res = await fetch("/api/notification", {
           method: "POST",
           body: JSON.stringify({ UserId, itemName: item.name }),
         });
-        const data = await res.json();
-        console.log(data);
 
         setNotifications((prev) => ({ ...prev, [item.name]: true }));
       }
@@ -59,11 +53,43 @@ export default function Home() {
         method: "PATCH",
         body: JSON.stringify({ UserId, itemName: item.name }),
       });
-      const data = await res.json();
-      console.log(data);
       setNotifications((prev) => ({ ...prev, [item.name]: false }));
     } catch (error) {
       alert(error);
+    }
+  };
+
+  // Check for stock changes using your database
+  const checkStockChanges = async () => {
+    try {
+      const response = await fetch("/api/notification", {
+        method: "PUT",
+      });
+      const result = await response.json();
+
+      if (result.changes > 0) {
+        console.log(`${result.changes} items changed stock status`);
+        console.log(`${result.notificationsSent} notifications sent`);
+
+        // Show browser notification for current user if they have notifications enabled
+        result.stockChanges.forEach((change) => {
+          if (
+            notifications[change.name] &&
+            Notification.permission === "granted"
+          ) {
+            const message = change.nowAvailable
+              ? `${change.name} is back in stock! 🎉`
+              : `${change.name} is now out of stock 😞`;
+
+            new Notification("Stock Alert", {
+              body: message,
+              icon: "/images/vecteezy_waiter-s-hand-illustration_.jpg",
+            });
+          }
+        });
+      }
+    } catch (error) {
+      console.log("Error checking stock changes:", error);
     }
   };
 
@@ -75,18 +101,24 @@ export default function Home() {
         });
         const result = await res.json();
         setMenuList(result.result);
+
+        // Check for stock changes after fetching data
+        await checkStockChanges();
       } catch (error) {
         alert(error);
       }
     };
+
     fetchNotifications();
     fetchdata();
+
     const interval = setInterval(() => {
       fetchdata();
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [UserId]);
+  }, [UserId, notifications]);
+
   return (
     <div className="min-h-full flex flex-col items-center ">
       <div className=" grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-10 mt-20">
@@ -103,7 +135,11 @@ export default function Home() {
               </p>
             </div>
             <div className="flex justify-between m-2 space-x-30 ">
-              <p className="text-xs text-gray-400">Notify me on this item</p>
+              <p className="text-xs text-gray-400">
+                {notifications[item.name]
+                  ? "🔔 You'll get alerts"
+                  : "Get stock alerts"}
+              </p>
               <Switch
                 checked={notifications[item.name] || false}
                 onCheckedChange={(checked) => {

@@ -18,9 +18,6 @@ const Navbar = () => {
           <Link href="/" className="hover:text-blue-600 transition">
             Canteen-Notify
           </Link>
-          <Link href="/alerts" className="hover:text-blue-600 transition">
-            View Alerts
-          </Link>
           <Link href="/staff" className="hover:text-blue-600 transition">
             Staff Login
           </Link>
