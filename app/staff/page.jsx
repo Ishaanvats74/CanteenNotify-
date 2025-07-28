@@ -9,36 +9,34 @@ const page = () => {
   const [icon, setIcon] = useState("/images/eye.svg");
   const [menuList, setMenuList] = useState([]);
   const [Remove, SetRemove] = useState(false);
-  const [Username,setUsername] = useState('');
-  const [Password,setPassword] = useState('');
+  const [Username, setUsername] = useState("");
+  const [Password, setPassword] = useState("");
 
+  const handleUsername = (event) => {
+    setUsername(event.target.value);
+  };
+  const handlePassword = (event) => {
+    setPassword(event.target.value);
+  };
 
-  const handleUsername = (event)=>{
-    setUsername(event.target.value)
-  }
-  const handlePassword = (event)=>{
-    setPassword(event.target.value)
-  }
-  
   const handleSubmit = async () => {
     try {
-      const fetchdata = async(Username,Password)=>{
-        const res = await fetch('/api/staffLogin',{
+      const fetchdata = async (Username, Password) => {
+        const res = await fetch("/api/staffLogin", {
           method: "POST",
-          body:JSON.stringify({Username,Password})
-        })
+          body: JSON.stringify({ Username, Password }),
+        });
         const data = await res.json();
         if (data.result === "Success") {
-          setLoggedIN(true)
-        }else {
+          setLoggedIN(true);
+        } else {
           alert(data.result);
         }
-      }
+      };
 
-      fetchdata(Username,Password);
-
+      fetchdata(Username, Password);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -85,25 +83,26 @@ const page = () => {
   };
 
   const DeleteTab = async () => {
-    {Remove == true ? SetRemove(false) : SetRemove(true);}
-};
+    {
+      Remove == true ? SetRemove(false) : SetRemove(true);
+    }
+  };
 
-const handleDelete = async(itemName)=>{
-      try {
-          const fetchdata = async(itemName)=>{
-              const res = await fetch("/api/staff",{
-                  method:"DELETE",
-                  body: JSON.stringify({itemName})
-              })
-              const data = await res.json();
-              console.log(data)
-          }
-          fetchdata(itemName)
-      } catch (error) {
-          console.log(error)
-      }
-
-  }
+  const handleDelete = async (itemName) => {
+    try {
+      const fetchdata = async (itemName) => {
+        const res = await fetch("/api/staff", {
+          method: "DELETE",
+          body: JSON.stringify({ itemName }),
+        });
+        const data = await res.json();
+        console.log(data);
+      };
+      fetchdata(itemName);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="mt-16">
@@ -136,7 +135,12 @@ const handleDelete = async(itemName)=>{
                       onClick={() => handleDelete(item.name, item.available)}
                       className={`hover:scale-105 transition-all duration-200 ease-in-out  font-semibold text-black px-2 py-1 text-sm `}
                     >
-                      <Image src={'/images/bin.png'} alt="bin" width={30} height={30}/>
+                      <Image
+                        src={"/images/bin.png"}
+                        alt="bin"
+                        width={30}
+                        height={30}
+                      />
                     </button>
                   </div>
                 </div>
